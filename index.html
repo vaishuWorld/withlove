@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Akka 🎂</title>
+
+<style>
+
+body::before {
+    content: "";
+    position: fixed;   /* ✅ IMPORTANT FIX */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-image: url("akka.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: grayscale(100%) contrast(150%) brightness(90%) blur(0.1px);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #2a1a3d,   /* deep dark lavender */
+        #3b235a,   /* rich purple */
+        #4b2b6f    /* soft glowing lavender */
+    );
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Comic Sans MS", cursive;
+    overflow: hidden;
+    position: relative;
+}
+
+
+
+    .container {
+        text-align: center;
+        z-index: 2;
+        position: relative;
+    }
+ h2 {
+    margin-top: 20px; 
+  }
+
+     h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+      h2 {
+        font-size: 1.2rem;
+        color: #ffd98e;
+        margin-bottom: 10px;
+    }
+
+     p {
+        font-size: 1.1rem;
+        margin: 5px 0;
+        color: #ffd98e;
+    }
+
+    .cake-container {
+        position: relative;
+        display: inline-block;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .cake {
+        width: 200px;
+        transition: transform 0.3s;
+    }
+
+    .cake-container:hover .cake {
+        transform: scale(1.05);
+    }
+
+    .candle {
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 40px;
+        background: #ff7b00;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .flame {
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 18px;
+        background: orange;
+        border-radius: 50%;
+        box-shadow: 0 0 20px orange, 0 0 40px #ff7b00;
+        animation: flicker 0.15s infinite alternate;
+    }
+
+    @keyframes flicker {
+        from { transform: translateX(-50%) scale(1); }
+        to { transform: translateX(-50%) scale(1.1); }
+    }
+
+    .final-msg {
+        margin-top: 20px;
+        font-size: 1.3rem;
+        display: none;
+        color: #ff9edb;
+        text-shadow: 0 0 15px #ff6fa0;
+        animation: glow 1s infinite alternate;
+    }
+
+    @keyframes glow {
+        0% { text-shadow: 0 0 10px #ff9edb; }
+        100% { text-shadow: 0 0 30px #ff6fa0; }
+    }
+
+    /* Floating hearts */
+    .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        transform: rotate(-45deg);
+        left: 50%;
+        bottom: 0;
+        opacity: 0.7;
+        animation: floatHeart 5s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+    }
+
+    .heart::before {
+        top: -10px;
+        left: 0;
+    }
+
+    .heart::after {
+        top: 0;
+        left: 10px;
+    }
+
+    @keyframes floatHeart {
+        0% {
+            transform: translateX(0) translateY(0) rotate(-45deg);
+            opacity: 0.7;
+        }
+        100% {
+            transform: translateX(-100px) translateY(-600px) rotate(-45deg);
+            opacity: 0;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Happy Birthday Akka 🫶 </h1>
+    <h2>To our favourite person with love 💖</h2>
+    <p>Click the cake 🎂</p>
+    <p>Then blow the candle 💨</p>
+
+    <div class="cake-container" onclick="lightCandle()">
+        <img src="cake.png" class="cake" alt="Cake">
+        <div class="candle" id="candle">
+            <div class="flame" id="flame"></div>
+        </div>
+    </div>
+    <div class="final-msg" id="finalMsg">
+        (With Love 💖)
+    </div>
+</div>
+
+<script>
+// Hearts generator
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = 3 + Math.random() * 2 + 's';
+    heart.style.width = 15 + Math.random() * 15 + 'px';
+    heart.style.height = heart.style.width;
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
+}
+setInterval(createHeart, 300);
+
+// Candle logic
+let candleLit = false;
+
+function lightCandle() {
+    if (!candleLit) {
+        document.getElementById("candle").style.display = "block";
+        candleLit = true;
+        startMic();
+    }
+}
+
+// Turn off flame + show final message
+function blowOut() {
+    document.getElementById("flame").style.display = "none";
+    document.getElementById("finalMsg").style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "birthday.html"; // next page
+    }, 2000);
+}
+
+// Mic detection (blow)
+function startMic() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+        const audioContext = new AudioContext();
+        const mic = audioContext.createMediaStreamSource(stream);
+        const analyser = audioContext.createAnalyser();
+        mic.connect(analyser);
+        analyser.fftSize = 256;
+
+        const data = new Uint8Array(analyser.frequencyBinCount);
+
+        function detectBlow() {
+            analyser.getByteFrequencyData(data);
+            let volume = data.reduce((a, b) => a + b) / data.length;
+
+            if (volume > 40) {
+                blowOut();
+            } else {
+                requestAnimationFrame(detectBlow);
+            }
+        }
+        detectBlow();
+    })
+    .catch(() => {
+        // fallback: click candle if mic not allowed
+        document.getElementById("candle").onclick = blowOut;
+    });
+}
+</script>
+
+</body>
+</html>
